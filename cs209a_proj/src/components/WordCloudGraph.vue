@@ -63,8 +63,8 @@ export default {
         {
           name: '功能bug',
           value: '3',
-          bgColor:'rgb(243, 84, 83,0.12)',
-          color:'#f35453',
+          bgColor:'rgba(13,26,168,0.12)',
+          color:'#2e17c2',
         },
         {
           name: '无法收到短信',
@@ -95,6 +95,12 @@ export default {
           value: '7',
           bgColor:'rgb(117, 133, 162,0.12)',
           color:'#7585A2',
+        },
+        {
+          name: 'lllll',
+          value: '7',
+          bgColor:'rgb(243, 84, 83,0.12)',
+          color:'#f35453',
         },
       ]
     }
