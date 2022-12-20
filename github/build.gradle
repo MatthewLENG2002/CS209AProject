@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'sustc.cs209'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.apache.commons:commons-math3:3.6.1'
+    implementation 'edu.stanford.nlp:stanford-corenlp:4.4.0'
+    implementation 'edu.stanford.nlp:stanford-corenlp:4.4.0:models'
+
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
+
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.baomidou:mybatis-plus-boot-starter-test:3.5.2'
+}
+
+
+tasks.register('bootRunDev') {
+    group = 'application'
+    description = 'connect to in-memory h2 db for developing'
+    doFirst {
+        tasks.bootRun.systemProperty('spring.profiles.active', 'dev')
+    }
+    finalizedBy('bootRun')
+}
+
+tasks.register('bootRunProd') {
+    group = 'application'
+    description = 'production applition with mysql'
+    doFirst {
+        tasks.bootRun.systemProperty('spring.profiles.active', 'prod')
+    }
+    finalizedBy('bootRun')
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

@@ -1,0 +1,12 @@
+version: "2.4"
+
+services:
+  datasource:
+    image: mysql:8.0
+    ports:
+      - "13306:13306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=cs209
+      - MYSQL_PASSWORD=cs209
+      - MYSQL_DATABASE=cs209
+      - MYSQL_TCP_PORT=13306
