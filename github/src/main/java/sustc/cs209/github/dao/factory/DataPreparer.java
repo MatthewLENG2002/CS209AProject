@@ -42,30 +42,30 @@ public class DataPreparer {
     @PostConstruct
     public void prepare() {
         log.info("Preparing data...");
-        targetingProps.getRepositories().parallelStream()
-                .peek(log::info)
-                .peek(repo -> {
-                    try {
-                        fetcher.fetchRepo(repo).get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .peek(log::info)
-                .flatMap(repo -> List.of(
-                        fetcher.fetchDeveloper(repo),
-                        fetcher.fetchCommits(repo),
-                        fetcher.fetchIssue(repo),
-                        fetcher.fetchRelease(repo)
-                ).stream())
-                .forEach(task -> {
-                    try {
-                        task.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        log.error("failure in fetching repo", e);
-                        throw new RuntimeException(e);
-                    }
-                });
+//        targetingProps.getRepositories().parallelStream()
+//                .peek(log::info)
+//                .peek(repo -> {
+//                    try {
+//                        fetcher.fetchRepo(repo).get();
+//                    } catch (InterruptedException | ExecutionException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                })
+//                .peek(log::info)
+//                .flatMap(repo -> List.of(
+//                        fetcher.fetchDeveloper(repo),
+//                        fetcher.fetchCommits(repo),
+//                        fetcher.fetchIssue(repo),
+//                        fetcher.fetchRelease(repo)
+//                ).stream())
+//                .forEach(task -> {
+//                    try {
+//                        task.get();
+//                    } catch (InterruptedException | ExecutionException e) {
+//                        log.error("failure in fetching repo", e);
+//                        throw new RuntimeException(e);
+//                    }
+//                });
     }
 
     @Service

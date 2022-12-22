@@ -3,10 +3,7 @@ package sustc.cs209.github.service;
 import org.springframework.stereotype.Service;
 import sustc.cs209.github.dao.entity.Issue;
 import sustc.cs209.github.dao.entity.User;
-import sustc.cs209.github.dto.CommitsStat;
-import sustc.cs209.github.dto.IssueDTO;
-import sustc.cs209.github.dto.IssueResolutionDTO;
-import sustc.cs209.github.dto.ReleaseStat;
+import sustc.cs209.github.dto.*;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +19,7 @@ public interface RepositoryService {
 
     public int getDeveloperCount(Integer id);
 
-    public List<Map.Entry<User, Integer>> getTopCommitter(Integer id);
+    public List<CommiterDTO> getTopCommitter(Integer id);
 
     public IssueResolutionDTO getIssueResolution(Integer id);
 

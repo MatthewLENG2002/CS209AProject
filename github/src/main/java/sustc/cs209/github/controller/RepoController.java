@@ -5,10 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import sustc.cs209.github.dao.entity.Repository;
 import sustc.cs209.github.dao.entity.User;
 import sustc.cs209.github.dao.mapper.RepositoryMapper;
-import sustc.cs209.github.dto.CommitsStat;
-import sustc.cs209.github.dto.IssueDTO;
-import sustc.cs209.github.dto.IssueResolutionDTO;
-import sustc.cs209.github.dto.ReleaseStat;
+import sustc.cs209.github.dto.*;
 import sustc.cs209.github.service.RepositoryService;
 import sustc.cs209.github.service.impl.RepositoryServiceImpl;
 
@@ -63,7 +60,7 @@ public class RepoController {
     @CrossOrigin
     @GetMapping("/get_top_committer")
     @ResponseBody
-    public List<Map.Entry<User, Integer>> getTopCommitter(@RequestParam Integer id) {
+    public List<CommiterDTO> getTopCommitter(@RequestParam Integer id) {
         return repositoryService.getTopCommitter(id);
     }
 

@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import sustc.cs209.github.dao.entity.*;
 import sustc.cs209.github.dao.mapper.RepositoryMapper;
 import sustc.cs209.github.dao.mapper.UserMapper;
-import sustc.cs209.github.dto.CommitsStat;
-import sustc.cs209.github.dto.IssueDTO;
-import sustc.cs209.github.dto.IssueResolutionDTO;
-import sustc.cs209.github.dto.ReleaseStat;
+import sustc.cs209.github.dto.*;
 import sustc.cs209.github.service.RepositoryService;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -77,7 +74,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         return repositoryMapper.getContributors(id).size();
     }
 
-    public List<Entry<User, Integer>> getTopCommitter(Integer id) {
+    public List<CommiterDTO> getTopCommitter(Integer id) {
         List<Commit> commits = repositoryMapper.getCommits(id);
         List<User> users = repositoryMapper.getContributors(id);
         Map<User, Integer> commitCount = new HashMap<>();
@@ -92,18 +89,22 @@ public class RepositoryServiceImpl implements RepositoryService {
         List<Entry<User, Integer>> res = new ArrayList<Entry<User, Integer>>(commitCount.entrySet());
         Collections.sort(res,new Comparator<Entry<User,Integer>>() {
             public int compare(Entry<User, Integer> o1, Entry<User, Integer> o2) {
-                return o1.getValue()-o2.getValue();
+                return o2.getValue()-o1.getValue();
             }
         });
-        return res.size() > 10 ? res.subList(0, 10): res;
+        List<CommiterDTO> resDTO = new ArrayList<>();
+        for (Entry<User, Integer> entry : res) {
+            resDTO.add(new CommiterDTO(entry.getKey().getId(), entry.getKey().getLogin(), entry.getKey().getAvatar(),entry.getValue()));
+        }
+        return resDTO.size() > 10 ? resDTO.subList(0, 10): resDTO;
     }
 
     public IssueResolutionDTO getIssueResolution(Integer id) {
         List<Issue> issues = repositoryMapper.getIssues(id);
         DescriptiveStatistics stats = new DescriptiveStatistics();
         for (Issue issue : issues) {
-            log.error(issue.toString());
-            log.error(issue.getClosed().toString());
+//            log.error(issue.toString());
+//            log.error(issue.getClosed().toString());
             if (issue.getClosed().equals(true)) {
                 Long dur = issue.getDuration();
                 if (dur != -1) {
