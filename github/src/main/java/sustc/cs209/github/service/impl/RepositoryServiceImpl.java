@@ -120,7 +120,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 //        Date q3 = new Date((long) stats.getPercentile(75));
 //        Date var = new Date((long) stats.getVariance());
 //        IssueResolutionDTO dto = new IssueResolutionDTO(min, max, mean, median, var, q1, q3);
-        IssueResolutionDTO dto = new IssueResolutionDTO(stats.getMin(), stats.getMax(), stats.getMean(), stats.getPercentile(50), stats.getPercentile(25), stats.getPercentile(75), stats.getStandardDeviation());
+        IssueResolutionDTO dto = new IssueResolutionDTO(stats.getMin()/3600000, stats.getMax()/3600000, stats.getMean()/3600000, stats.getPercentile(50)/3600000, stats.getPercentile(25)/3600000, stats.getPercentile(75)/3600000, stats.getStandardDeviation()/3600000);
         return dto;
     }
 
@@ -172,7 +172,7 @@ public class RepositoryServiceImpl implements RepositoryService {
     }
 
 // sel: 0: title 1: description 2: comments
-    public Map<String, Integer> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel) {
+    public List<Entry<String, Integer>> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel) {
         List<Issue> issues = repositoryMapper.getIssues(id);
         Map<String, Integer> resNoun = new HashMap<>();
         Map<String, Integer> resVerb = new HashMap<>();
@@ -222,7 +222,24 @@ public class RepositoryServiceImpl implements RepositoryService {
                 }
             }
         }
-        return noun ? resNoun : resVerb;
+        resNoun.remove("bug");
+        resNoun.remove("debug");
+        resNoun.remove("error");
+        List<Entry<String, Integer>> resNounList = new ArrayList<Entry<String, Integer>>(resNoun.entrySet());
+        Collections.sort(resNounList,new Comparator<Map.Entry<String,Integer>>() {
+            public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+                return o2.getValue()-o1.getValue();
+            }
+        });
+
+        List<Entry<String, Integer>> resVerbList = new ArrayList<Entry<String, Integer>>(resVerb.entrySet());
+        Collections.sort(resVerbList,new Comparator<Map.Entry<String,Integer>>() {
+            public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+                return o2.getValue()-o1.getValue();
+            }
+        });
+
+        return noun ? (resNounList.size() > 10 ? resNounList.subList(0, 10):resNounList) : (resVerbList.size() > 10 ? resVerbList.subList(0, 10):resVerbList);
     }
 
     public ReleaseStat nextReleaseCommitCount(Integer id) {

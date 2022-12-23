@@ -88,9 +88,9 @@ public class RepoController {
     @CrossOrigin
     @GetMapping("/get_issue_title_keyword")
     @ResponseBody
-    public Map<String, Integer> getIssueTitleKeyWord(@RequestParam Integer id,
-                                                     @RequestParam Boolean noun,
-                                                     @RequestParam Integer sel) {
+    public List<Map.Entry<String, Integer>> getIssueTitleKeyWord(@RequestParam Integer id,
+                                                                 @RequestParam Boolean noun,
+                                                                 @RequestParam Integer sel) {
         return repositoryService.getIssueTitleKeyWord(id, noun, sel);
     }
 
