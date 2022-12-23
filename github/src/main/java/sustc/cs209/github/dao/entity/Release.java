@@ -24,7 +24,7 @@ public class Release {
     private Integer release_id;
 
     @TableField("tag")
-    private String tag_name;
+    private String tag;
 
     @TableField("createat")
     private Long createat;

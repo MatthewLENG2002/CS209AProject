@@ -42,3 +42,6 @@ spring:
     url: jdbc:mysql://localhost:13306/cs209
     username: root
     password: cs209
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml

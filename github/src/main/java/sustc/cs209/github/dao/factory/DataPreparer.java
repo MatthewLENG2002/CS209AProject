@@ -20,6 +20,8 @@ import sustc.cs209.github.dao.entity.*;
 import sustc.cs209.github.dao.entity.Commit;
 import sustc.cs209.github.dao.entity.User;
 import sustc.cs209.github.dao.mapper.*;
+import sustc.cs209.github.service.RepositoryService;
+import sustc.cs209.github.service.impl.RepositoryServiceImpl;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -38,6 +40,12 @@ public class DataPreparer {
 
     @Autowired
     private TargetingProps targetingProps;
+
+    @Autowired
+    private RepositoryMapper repositoryMapper;
+
+    @Autowired
+    private RepositoryService repositoryService;
 
     @PostConstruct
     public void prepare() {

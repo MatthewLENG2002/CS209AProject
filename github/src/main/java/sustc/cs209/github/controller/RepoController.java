@@ -1,7 +1,9 @@
 package sustc.cs209.github.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sustc.cs209.github.base.properties.TargetingProps;
 import sustc.cs209.github.dao.entity.Repository;
 import sustc.cs209.github.dao.entity.User;
 import sustc.cs209.github.dao.mapper.RepositoryMapper;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/repo")
+@Slf4j
 public class RepoController {
 
     @Autowired
@@ -21,6 +24,27 @@ public class RepoController {
 
     @Autowired
     private RepositoryMapper repositoryMapper;
+
+    @Autowired
+    private TargetingProps targetingProps;
+
+    @CrossOrigin
+    @GetMapping("/cache")
+    public void cache(){
+        log.info("Preparing caching...");
+        targetingProps.getRepositories().parallelStream().forEach(repo -> {
+            log.info("Caching repo {}", repo);
+            Integer repoId = repositoryMapper.getRepo(repo);
+            log.info("Caching repo {} with id {}", repo, repoId);
+            repositoryService.getTopCommitter(repoId);
+            repositoryService.getIssueResolution(repoId);
+            repositoryService.getReleaseStats(repoId);
+            repositoryService.getCommitsStats(repoId);
+            repositoryService.getIssueTitleKeyWord(repoId, true, 1);
+            repositoryService.getIssueTitleKeyWord(repoId, false, 1);
+        });
+        log.info("All set!");
+    }
 
     @CrossOrigin
     @GetMapping("/list")
