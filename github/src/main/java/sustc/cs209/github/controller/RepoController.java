@@ -112,7 +112,7 @@ public class RepoController {
     @CrossOrigin
     @GetMapping("/get_issue_title_keyword")
     @ResponseBody
-    public List<Map.Entry<String, Integer>> getIssueTitleKeyWord(@RequestParam Integer id,
+    public List<KeywordDTO> getIssueTitleKeyWord(@RequestParam Integer id,
                                                                  @RequestParam Boolean noun,
                                                                  @RequestParam Integer sel) {
         return repositoryService.getIssueTitleKeyWord(id, noun, sel);
@@ -130,6 +130,13 @@ public class RepoController {
     @ResponseBody
     public List<IssueDTO> getIssues(Integer id) {
         return repositoryService.getIssues(id);
+    }
+
+    @CrossOrigin
+    @GetMapping("/get_top_issues")
+    @ResponseBody
+    public List<IssueDTO> getTopIssues(Integer id) {
+        return repositoryService.getTopResolutionIssues(id);
     }
 
 }

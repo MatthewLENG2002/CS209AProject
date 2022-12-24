@@ -27,10 +27,12 @@ public interface RepositoryService {
 
     public CommitsStat getCommitsStats(Integer id);
 
-    public List<Map.Entry<String, Integer>> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel);
+    public List<KeywordDTO> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel);
 
     public ReleaseStat nextReleaseCommitCount(Integer id);
 
     public List<IssueDTO> getIssues(Integer id);
+
+    public List<IssueDTO> getTopResolutionIssues(Integer id);
 
 }

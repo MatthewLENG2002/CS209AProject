@@ -93,16 +93,16 @@ public class RepositoryServiceImpl implements RepositoryService {
 //            log.info("user " + usr.toString());
         }
         List<Entry<User, Integer>> res = new ArrayList<Entry<User, Integer>>(commitCount.entrySet());
-        Collections.sort(res,new Comparator<Entry<User,Integer>>() {
+        Collections.sort(res, new Comparator<Entry<User, Integer>>() {
             public int compare(Entry<User, Integer> o1, Entry<User, Integer> o2) {
-                return o2.getValue()-o1.getValue();
+                return o2.getValue() - o1.getValue();
             }
         });
         List<CommiterDTO> resDTO = new ArrayList<>();
         for (Entry<User, Integer> entry : res) {
-            resDTO.add(new CommiterDTO(entry.getKey().getId(), entry.getKey().getLogin(), entry.getKey().getAvatar(),entry.getValue()));
+            resDTO.add(new CommiterDTO(entry.getKey().getId(), entry.getKey().getLogin(), entry.getKey().getAvatar(), entry.getValue()));
         }
-        return resDTO.size() > 10 ? resDTO.subList(0, 10): resDTO;
+        return resDTO.size() > 10 ? resDTO.subList(0, 10) : resDTO;
     }
 
     @Cacheable(value = "IssueResolutionDTO", key = "#id")
@@ -127,7 +127,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 //        Date q3 = new Date((long) stats.getPercentile(75));
 //        Date var = new Date((long) stats.getVariance());
 //        IssueResolutionDTO dto = new IssueResolutionDTO(min, max, mean, median, var, q1, q3);
-        IssueResolutionDTO dto = new IssueResolutionDTO(stats.getMin()/3600000, stats.getMax()/3600000, stats.getMean()/3600000, stats.getPercentile(50)/3600000, stats.getPercentile(25)/3600000, stats.getPercentile(75)/3600000, stats.getStandardDeviation()/3600000);
+        IssueResolutionDTO dto = new IssueResolutionDTO(stats.getMin() / 3600000, stats.getMax() / 3600000, stats.getMean() / 3600000, stats.getPercentile(50) / 3600000, stats.getPercentile(25) / 3600000, stats.getPercentile(75) / 3600000, stats.getStandardDeviation() / 3600000);
         return dto;
     }
 
@@ -182,7 +182,7 @@ public class RepositoryServiceImpl implements RepositoryService {
 
     // sel: 1: title 2: description 3: comments
     @Cacheable(value = "List<Entry<String, Integer>>", key = "#id+':'+#noun+':'+#sel")
-    public List<Entry<String, Integer>> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel) {
+    public List<KeywordDTO> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel) {
         List<Issue> issues = repositoryMapper.getIssues(id);
         Map<String, Integer> resNoun = new HashMap<>();
         Map<String, Integer> resVerb = new HashMap<>();
@@ -207,9 +207,9 @@ public class RepositoryServiceImpl implements RepositoryService {
 //                log.error("token size "+String.valueOf(token.tokens().size()));
                 for (CoreLabel label : token.tokens()) {
 //                    log.error("label index " + String.valueOf(label.index()));
-                    if (Objects.isNull(tag) || Objects.isNull(tag.get(label.index()-1)))
+                    if (Objects.isNull(tag) || Objects.isNull(tag.get(label.index() - 1)))
                         continue;
-                    if (tag.get(label.index()-1).equals("NN")
+                    if (tag.get(label.index() - 1).equals("NN")
 //                            || tag.get(label.index()).equals("NNS")
                     ) {
                         String word = label.originalText();
@@ -219,7 +219,7 @@ public class RepositoryServiceImpl implements RepositoryService {
                             resNoun.put(word, 1);
                         }
                     }
-                    if (tag.get(label.index()-1).equals("VB")
+                    if (tag.get(label.index() - 1).equals("VB")
 //                            || tag.get(label.index()).equals("VBD") || tag.get(label.index()).equals("VBG") || tag.get(label.index()).equals("VBN") || tag.get(label.index()).equals("VBP") || tag.get(label.index()).equals("VBZ")
                     ) {
                         String word = label.originalText();
@@ -236,20 +236,28 @@ public class RepositoryServiceImpl implements RepositoryService {
         resNoun.remove("debug");
         resNoun.remove("error");
         List<Entry<String, Integer>> resNounList = new ArrayList<Entry<String, Integer>>(resNoun.entrySet());
-        Collections.sort(resNounList,new Comparator<Map.Entry<String,Integer>>() {
+        Collections.sort(resNounList, new Comparator<Map.Entry<String, Integer>>() {
             public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
-                return o2.getValue()-o1.getValue();
+                return o2.getValue() - o1.getValue();
             }
         });
+        List<KeywordDTO> resNounListDTO = new ArrayList<>();
+        for (Entry<String, Integer> entry : resNounList) {
+            resNounListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue()));
+        }
 
         List<Entry<String, Integer>> resVerbList = new ArrayList<Entry<String, Integer>>(resVerb.entrySet());
-        Collections.sort(resVerbList,new Comparator<Map.Entry<String,Integer>>() {
+        Collections.sort(resVerbList, new Comparator<Map.Entry<String, Integer>>() {
             public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
-                return o2.getValue()-o1.getValue();
+                return o2.getValue() - o1.getValue();
             }
         });
+        List<KeywordDTO> resVerbListDTO = new ArrayList<>();
+        for (Entry<String, Integer> entry : resVerbList) {
+            resVerbListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue()));
+        }
 
-        return noun ? (resNounList.size() > 10 ? resNounList.subList(0, 10):resNounList) : (resVerbList.size() > 10 ? resVerbList.subList(0, 10):resVerbList);
+        return noun ? (resNounListDTO.size() > 10 ? resNounListDTO.subList(0, 10) : resNounListDTO) : (resVerbListDTO.size() > 10 ? resVerbListDTO.subList(0, 10) : resVerbListDTO);
     }
 
     public ReleaseStat nextReleaseCommitCount(Integer id) {
@@ -274,7 +282,7 @@ public class RepositoryServiceImpl implements RepositoryService {
             obs.add(inputt[i][0], inputt[i][1]);
         }
         double[] coeff = fitter.fit(obs.toList());
-        ReleaseStat last_release = stats.get(stats.size()-1);
+        ReleaseStat last_release = stats.get(stats.size() - 1);
         ReleaseStat pred = new ReleaseStat();
         pred.setRelease(last_release.getRelease());
         pred.setStart(last_release.getStart());
@@ -291,6 +299,21 @@ public class RepositoryServiceImpl implements RepositoryService {
             res.add(new IssueDTO(issue.getDisplay(), issue.getCreateat(), issue.getDuration()));
         }
         return res;
+    }
+
+    public List<IssueDTO> getTopResolutionIssues(Integer id) {
+        List<Issue> issues = repositoryMapper.getIssues(id);
+        List<IssueDTO> res = new ArrayList<>();
+        for (Issue issue : issues) {
+            res.add(new IssueDTO(issue.getDisplay(), issue.getCreateat(), issue.getDuration()));
+        }
+        res.sort(new Comparator<IssueDTO>() {
+            @Override
+            public int compare(IssueDTO o1, IssueDTO o2) {
+                return o2.getDuration().compareTo(o1.getDuration());
+            }
+        });
+        return res.size() > 10 ? res.subList(0, 10) : res;
     }
 
 
