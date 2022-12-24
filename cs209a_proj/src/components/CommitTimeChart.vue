@@ -28,7 +28,7 @@ export default {
         // },
         legend: {
           data: ['Punch Card'],
-          left: 'right'
+          left: 'left'
         },
         polar: {},
         tooltip: {
@@ -40,6 +40,12 @@ export default {
                 ' of ' +
                 days[params.value[0]]
             );
+          }
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            saveAsImage: {}
           }
         },
         angleAxis: {

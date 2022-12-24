@@ -2,7 +2,7 @@
   <section class="cloud-bed">
     <div class="cloud-box">
       <span
-          v-for="(item, index) in dataList"
+          v-for="(item, index) in option.dataList"
           :key="index"
           @click="getDataInfo(item)"
           :style="{color:item.color,background:item.bgColor}"
@@ -18,7 +18,73 @@ import {mapGetters} from "vuex";
 export default {
   name: "word-cloud",
   computed:{
-    ...mapGetters(["getIssueKeyword"]),
+    ...mapGetters(["getIssueNounKeyword"]),
+    option(){
+      return{
+        dataList: [
+          {
+            name: this.getIssueNounKeyword[0],
+            value: '1',
+            bgColor:'rgb(57, 193, 207,0.12)',
+            color:'#39c1cf',
+          },
+          {
+            name: this.getIssueNounKeyword[1],
+            value: '8',
+            bgColor:'rgb(66, 105, 245,0.12)',
+            color:'#4269f5',
+          },
+          {
+            name: this.getIssueNounKeyword[2],
+            value: '9',
+            bgColor:'rgb(184, 107, 215,0.12)',
+            color:'#b86bd7',
+          },
+          {
+            name: this.getIssueNounKeyword[3],
+            value: '3',
+            bgColor:'rgba(13,26,168,0.12)',
+            color:'#2e17c2',
+          },
+          {
+            name: this.getIssueNounKeyword[4],
+            value: '6',
+            bgColor:'rgb(250, 116, 20,0.12)',
+            color:'#FA7414',
+          },
+          {
+            name: this.getIssueNounKeyword[5],
+            value: '10',
+            bgColor:'rgb(255, 171, 30,0.12)',
+            color:'#FFAB1E',
+          },
+          {
+            name: this.getIssueNounKeyword[6],
+            value: '2',
+            bgColor:'rgb(136, 104, 217,0.12)',
+            color:'#8868D9',
+          },
+          {
+            name: this.getIssueNounKeyword[7],
+            value: '5',
+            bgColor:'rgb(42, 184, 230,0.12)',
+            color:'#2AB8E6',
+          },
+          {
+            name: this.getIssueNounKeyword[8],
+            value: '7',
+            bgColor:'rgb(117, 133, 162,0.12)',
+            color:'#7585A2',
+          },
+          {
+            name: this.getIssueNounKeyword[9],
+            value: '7',
+            bgColor:'rgb(243, 84, 83,0.12)',
+            color:'#f35453',
+          },
+        ]
+      }
+    }
   },
   data() {
     return {
@@ -40,69 +106,7 @@ export default {
       sinB: '',
       cosB: '',
       sinC: '',
-      cosC: '',
-      dataList: [
-        {
-          name: 'ii',
-          value: '1',
-          bgColor:'rgb(57, 193, 207,0.12)',
-          color:'#39c1cf',
-        },
-        {
-          name: '闪退',
-          value: '8',
-          bgColor:'rgb(66, 105, 245,0.12)',
-          color:'#4269f5',
-        },
-        {
-          name: '登录问题',
-          value: '9',
-          bgColor:'rgb(184, 107, 215,0.12)',
-          color:'#b86bd7',
-        },
-        {
-          name: '功能bug',
-          value: '3',
-          bgColor:'rgba(13,26,168,0.12)',
-          color:'#2e17c2',
-        },
-        {
-          name: '无法收到短信',
-          value: '6',
-          bgColor:'rgb(250, 116, 20,0.12)',
-          color:'#FA7414',
-        },
-        {
-          name: '人脸/指纹认证失败',
-          value: '10',
-          bgColor:'rgb(255, 171, 30,0.12)',
-          color:'#FFAB1E',
-        },
-        {
-          name: '功能建议',
-          value: '2',
-          bgColor:'rgb(136, 104, 217,0.12)',
-          color:'#8868D9',
-        },
-        {
-          name: 'UI/UX',
-          value: '5',
-          bgColor:'rgb(42, 184, 230,0.12)',
-          color:'#2AB8E6',
-        },
-        {
-          name: '导航性',
-          value: '7',
-          bgColor:'rgb(117, 133, 162,0.12)',
-          color:'#7585A2',
-        },
-        {
-          name: 'lllll',
-          value: '7',
-          bgColor:'rgb(243, 84, 83,0.12)',
-          color:'#f35453',
-        },
-      ]
+      cosC: ''
     }
   },
   mounted () {
