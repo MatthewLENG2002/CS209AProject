@@ -11,7 +11,15 @@ export default {
     option(){
       return {
         xAxis: {},
-        yAxis: {},
+        yAxis: {
+          name: 'duration'
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            saveAsImage: {}
+          }
+        },
         series: [
           {
             symbolSize: 20,

@@ -31,6 +31,8 @@ export default {
           boundaryGap: [0, 0.01]
         },
         yAxis: {
+
+          name: 'developers',
           type: 'category',
           data: this.getDeveloperChartY
         },

@@ -72,7 +72,7 @@ export default {
         },
         series: [
           {
-            name: 'Electricity',
+            name: 'Commits',
             type: 'line',
             smooth: true,
             // prettier-ignore
