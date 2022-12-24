@@ -33,6 +33,6 @@ public interface RepositoryService {
 
     public List<IssueDTO> getIssues(Integer id);
 
-    public List<IssueDTO> getTopResolutionIssues(Integer id);
+    public List<TopIssueDTO> getTopResolutionIssues(Integer id);
 
 }

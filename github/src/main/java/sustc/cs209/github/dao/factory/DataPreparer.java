@@ -196,8 +196,10 @@ public class DataPreparer {
                 for (int i = 0; i < respDto.length; i++) {
                     try {
                         log.info("{}", respDto[i]);
-                        Commit commit = RepositoryFactory.of(respDto[i], repoId);
-                        commitMapper.insert(commit);
+                        if (!Objects.isNull(respDto[i].getAuthor())) {
+                            Commit commit = RepositoryFactory.of(respDto[i], repoId);
+                            commitMapper.insert(commit);
+                        }
                     } catch (Exception e) {
                         log.error("error author", e);
                     }

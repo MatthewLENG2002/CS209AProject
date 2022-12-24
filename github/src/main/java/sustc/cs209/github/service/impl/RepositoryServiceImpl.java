@@ -89,7 +89,8 @@ public class RepositoryServiceImpl implements RepositoryService {
         }
         for (Commit commit : commits) {
             User usr = userMapper.getUserByLogin(commit.getAuthor());
-            commitCount.put(usr, commitCount.get(usr) + 1);
+            if(!Objects.isNull(usr) && !Objects.isNull(commitCount.get(usr)))
+                commitCount.put(usr, commitCount.get(usr) + 1);
 //            log.info("user " + usr.toString());
         }
         List<Entry<User, Integer>> res = new ArrayList<Entry<User, Integer>>(commitCount.entrySet());
@@ -177,6 +178,19 @@ public class RepositoryServiceImpl implements RepositoryService {
 //            log.error(" hour "+ cal.get(Calendar.HOUR_OF_DAY));
             stats[cal.get(Calendar.DAY_OF_WEEK) - 1][cal.get(Calendar.HOUR_OF_DAY)]++;
         }
+        Integer minCommits = Integer.MAX_VALUE;
+        for (int i = 0; i < stats.length; i++) {
+            for (int j = 0; j < stats[0].length; j++) {
+                if (stats[i][j] < minCommits && stats[i][j] != 0) {
+                    minCommits = stats[i][j];
+                }
+            }
+        }
+        for (int i = 0; i < stats.length; i++) {
+            for (int j = 0; j < stats[0].length; j++) {
+                stats[i][j] /= minCommits;
+            }
+        }
         return new CommitsStat(stats);
     }
 
@@ -212,7 +226,7 @@ public class RepositoryServiceImpl implements RepositoryService {
                     if (tag.get(label.index() - 1).equals("NN")
 //                            || tag.get(label.index()).equals("NNS")
                     ) {
-                        String word = label.originalText();
+                        String word = label.originalText().toLowerCase();
                         if (resNoun.containsKey(word)) {
                             resNoun.put(word, resNoun.get(word) + 1);
                         } else {
@@ -222,7 +236,7 @@ public class RepositoryServiceImpl implements RepositoryService {
                     if (tag.get(label.index() - 1).equals("VB")
 //                            || tag.get(label.index()).equals("VBD") || tag.get(label.index()).equals("VBG") || tag.get(label.index()).equals("VBN") || tag.get(label.index()).equals("VBP") || tag.get(label.index()).equals("VBZ")
                     ) {
-                        String word = label.originalText();
+                        String word = label.originalText().toLowerCase();
                         if (resVerb.containsKey(word)) {
                             resVerb.put(word, resVerb.get(word) + 1);
                         } else {
@@ -234,7 +248,9 @@ public class RepositoryServiceImpl implements RepositoryService {
         }
         resNoun.remove("bug");
         resNoun.remove("debug");
+        resVerb.remove("debug");
         resNoun.remove("error");
+        resVerb.remove("be");
         List<Entry<String, Integer>> resNounList = new ArrayList<Entry<String, Integer>>(resNoun.entrySet());
         Collections.sort(resNounList, new Comparator<Map.Entry<String, Integer>>() {
             public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
@@ -296,20 +312,22 @@ public class RepositoryServiceImpl implements RepositoryService {
         List<Issue> issues = repositoryMapper.getIssues(id);
         List<IssueDTO> res = new ArrayList<>();
         for (Issue issue : issues) {
-            res.add(new IssueDTO(issue.getDisplay(), issue.getCreateat(), issue.getDuration()));
+            res.add(new IssueDTO(issue.getDisplay(), issue.getCreateat(), issue.getDuration()/3600000));
         }
         return res;
     }
 
-    public List<IssueDTO> getTopResolutionIssues(Integer id) {
+    public List<TopIssueDTO> getTopResolutionIssues(Integer id) {
         List<Issue> issues = repositoryMapper.getIssues(id);
-        List<IssueDTO> res = new ArrayList<>();
+        List<TopIssueDTO> res = new ArrayList<>();
         for (Issue issue : issues) {
-            res.add(new IssueDTO(issue.getDisplay(), issue.getCreateat(), issue.getDuration()));
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(issue.getCreateat());
+            res.add(new TopIssueDTO(issue.getDisplay(), c.getTime().toString(), issue.getDuration()/3600000));
         }
-        res.sort(new Comparator<IssueDTO>() {
+        res.sort(new Comparator<TopIssueDTO>() {
             @Override
-            public int compare(IssueDTO o1, IssueDTO o2) {
+            public int compare(TopIssueDTO o1, TopIssueDTO o2) {
                 return o2.getDuration().compareTo(o1.getDuration());
             }
         });

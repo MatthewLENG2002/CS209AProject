@@ -135,7 +135,7 @@ public class RepoController {
     @CrossOrigin
     @GetMapping("/get_top_issues")
     @ResponseBody
-    public List<IssueDTO> getTopIssues(Integer id) {
+    public List<TopIssueDTO> getTopIssues(Integer id) {
         return repositoryService.getTopResolutionIssues(id);
     }
 
