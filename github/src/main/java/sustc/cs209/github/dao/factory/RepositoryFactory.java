@@ -63,7 +63,7 @@ public class RepositoryFactory {
                 .id(rawData.getId())
                 .repoId(repoId)
                 .release_id(rawData.getId())
-                .tag_name(rawData.getTag_name())
+                .tag(rawData.getTag_name())
                 .createat(rawData.getPublished_at().getTime())
                 .build();
     }

@@ -10,7 +10,11 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.fitting.SimpleCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoints;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sustc.cs209.github.dao.entity.*;
 import sustc.cs209.github.dao.mapper.RepositoryMapper;
 import sustc.cs209.github.dao.mapper.UserMapper;
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@CacheConfig(cacheNames = "GoodsType")
 public class RepositoryServiceImpl implements RepositoryService {
 
     @Autowired
@@ -74,6 +79,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         return repositoryMapper.getContributors(id).size();
     }
 
+    @Cacheable(value = "List<CommiterDTO>", key = "#id")
     public List<CommiterDTO> getTopCommitter(Integer id) {
         List<Commit> commits = repositoryMapper.getCommits(id);
         List<User> users = repositoryMapper.getContributors(id);
@@ -99,6 +105,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         return resDTO.size() > 10 ? resDTO.subList(0, 10): resDTO;
     }
 
+    @Cacheable(value = "IssueResolutionDTO", key = "#id")
     public IssueResolutionDTO getIssueResolution(Integer id) {
         List<Issue> issues = repositoryMapper.getIssues(id);
         DescriptiveStatistics stats = new DescriptiveStatistics();
@@ -120,10 +127,11 @@ public class RepositoryServiceImpl implements RepositoryService {
 //        Date q3 = new Date((long) stats.getPercentile(75));
 //        Date var = new Date((long) stats.getVariance());
 //        IssueResolutionDTO dto = new IssueResolutionDTO(min, max, mean, median, var, q1, q3);
-        IssueResolutionDTO dto = new IssueResolutionDTO(stats.getMin(), stats.getMax(), stats.getMean(), stats.getPercentile(50), stats.getPercentile(25), stats.getPercentile(75), stats.getStandardDeviation());
+        IssueResolutionDTO dto = new IssueResolutionDTO(stats.getMin()/3600000, stats.getMax()/3600000, stats.getMean()/3600000, stats.getPercentile(50)/3600000, stats.getPercentile(25)/3600000, stats.getPercentile(75)/3600000, stats.getStandardDeviation()/3600000);
         return dto;
     }
 
+    @Cacheable(value = "List<ReleaseStat>", key = "#id")
     public List<ReleaseStat> getReleaseStats(Integer id) {
         List<Release> releases = repositoryMapper.getReleases(id);
         if (releases.size() == 0) {
@@ -131,9 +139,9 @@ public class RepositoryServiceImpl implements RepositoryService {
         }
         List<Commit> commits = repositoryMapper.getCommits(id);
         List<ReleaseStat> res = new ArrayList<>();
-        res.add(new ReleaseStat(releases.get(0).getTag_name(), -1L, releases.get(0).getCreateat(), 0));
+        res.add(new ReleaseStat(releases.get(0).getTag(), -1L, releases.get(0).getCreateat(), 0));
         for (int i = 1; i < releases.size(); i++) {
-            res.add(new ReleaseStat(releases.get(i).getTag_name(), releases.get(i).getCreateat()));
+            res.add(new ReleaseStat(releases.get(i).getTag(), releases.get(i).getCreateat()));
             res.get(i).setStart(res.get(i - 1).getEnd());
         }
         res.add(new ReleaseStat("Latest", res.get(res.size() - 1).getEnd(), new Date().getTime(), 0));
@@ -152,6 +160,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         return res;
     }
 
+    @Cacheable(value = "CommitsStat", key = "#id")
     public CommitsStat getCommitsStats(Integer id) {
         Integer[][] stats = new Integer[7][24];
         for (int i = 0; i < stats.length; i++) {
@@ -171,8 +180,9 @@ public class RepositoryServiceImpl implements RepositoryService {
         return new CommitsStat(stats);
     }
 
-// sel: 0: title 1: description 2: comments
-    public Map<String, Integer> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel) {
+    // sel: 1: title 2: description 3: comments
+    @Cacheable(value = "List<Entry<String, Integer>>", key = "#id+':'+#noun+':'+#sel")
+    public List<Entry<String, Integer>> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel) {
         List<Issue> issues = repositoryMapper.getIssues(id);
         Map<String, Integer> resNoun = new HashMap<>();
         Map<String, Integer> resVerb = new HashMap<>();
@@ -185,7 +195,7 @@ public class RepositoryServiceImpl implements RepositoryService {
             } else if (sel == 3) {
                 title = issue.getComments();
             } else {
-                System.err.println("Unsupport selection");
+                System.err.println("Unsupported selection");
                 title = "null";
             }
             CoreDocument doc = new CoreDocument(title);
@@ -222,7 +232,24 @@ public class RepositoryServiceImpl implements RepositoryService {
                 }
             }
         }
-        return noun ? resNoun : resVerb;
+        resNoun.remove("bug");
+        resNoun.remove("debug");
+        resNoun.remove("error");
+        List<Entry<String, Integer>> resNounList = new ArrayList<Entry<String, Integer>>(resNoun.entrySet());
+        Collections.sort(resNounList,new Comparator<Map.Entry<String,Integer>>() {
+            public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+                return o2.getValue()-o1.getValue();
+            }
+        });
+
+        List<Entry<String, Integer>> resVerbList = new ArrayList<Entry<String, Integer>>(resVerb.entrySet());
+        Collections.sort(resVerbList,new Comparator<Map.Entry<String,Integer>>() {
+            public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+                return o2.getValue()-o1.getValue();
+            }
+        });
+
+        return noun ? (resNounList.size() > 10 ? resNounList.subList(0, 10):resNounList) : (resVerbList.size() > 10 ? resVerbList.subList(0, 10):resVerbList);
     }
 
     public ReleaseStat nextReleaseCommitCount(Integer id) {

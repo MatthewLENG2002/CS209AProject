@@ -27,7 +27,7 @@ public interface RepositoryService {
 
     public CommitsStat getCommitsStats(Integer id);
 
-    public Map<String, Integer> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel);
+    public List<Map.Entry<String, Integer>> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel);
 
     public ReleaseStat nextReleaseCommitCount(Integer id);
 
