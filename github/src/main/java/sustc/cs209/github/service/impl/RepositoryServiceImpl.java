@@ -312,7 +312,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         List<Issue> issues = repositoryMapper.getIssues(id);
         List<IssueDTO> res = new ArrayList<>();
         for (Issue issue : issues) {
-            res.add(new IssueDTO(issue.getDisplay(), issue.getCreateat(), issue.getDuration()/3600000));
+            res.add(new IssueDTO(issue.getDisplay(), issue.getCreateat()/3600000, issue.getDuration()/3600000));
         }
         return res;
     }
