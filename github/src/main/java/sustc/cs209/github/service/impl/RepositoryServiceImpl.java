@@ -158,6 +158,7 @@ public class RepositoryServiceImpl implements RepositoryService {
                 }
             }
         }
+        log.info(res.toString());
         return res;
     }
 
@@ -276,10 +277,10 @@ public class RepositoryServiceImpl implements RepositoryService {
         return noun ? (resNounListDTO.size() > 20 ? resNounListDTO.subList(0, 20) : resNounListDTO) : (resVerbListDTO.size() > 20 ? resVerbListDTO.subList(0, 20) : resVerbListDTO);
     }
 
-    public ReleaseStat nextReleaseCommitCount(Integer id) {
+    public ReleasePredict nextReleaseCommitCount(Integer id) {
         List<ReleaseStat> stats = getReleaseStats(id);
         if (stats.size() == 0) {
-            return new ReleaseStat("No Release", -1L, -1L, 0);
+            return new ReleasePredict("No Release", -1L, -1L, 0, "null", "null");
         }
         List<double[]> data = new ArrayList<>();
         Double avgDuration = 0D;
@@ -299,10 +300,17 @@ public class RepositoryServiceImpl implements RepositoryService {
         }
         double[] coeff = fitter.fit(obs.toList());
         ReleaseStat last_release = stats.get(stats.size() - 1);
-        ReleaseStat pred = new ReleaseStat();
+        ReleasePredict pred = new ReleasePredict();
         pred.setRelease(last_release.getRelease());
         pred.setStart(last_release.getStart());
+        Calendar c1 = Calendar.getInstance();
+        c1.setTimeInMillis(last_release.getStart());
+        pred.setStartString(c1.getTime().toString());
         pred.setEnd(last_release.getStart() + avgDuration.longValue());
+        Calendar c2 = Calendar.getInstance();
+        c2.setTimeInMillis(pred.getEnd());
+        pred.setEndString(c2.getTime().toString());
+        pred.setStartString(c1.getTime().toString());
         Integer pred_commits = (int) (coeff[0] + coeff[1] * avgDuration + coeff[2] * avgDuration * avgDuration);
         pred.setCommits(pred_commits);
         return pred;

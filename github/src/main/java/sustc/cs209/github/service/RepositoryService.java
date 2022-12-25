@@ -29,7 +29,7 @@ public interface RepositoryService {
 
     public List<KeywordDTO> getIssueTitleKeyWord(Integer id, Boolean noun, Integer sel);
 
-    public ReleaseStat nextReleaseCommitCount(Integer id);
+    public ReleasePredict nextReleaseCommitCount(Integer id);
 
     public List<IssueDTO> getIssues(Integer id);
 

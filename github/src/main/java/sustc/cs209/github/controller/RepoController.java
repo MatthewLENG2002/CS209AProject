@@ -121,7 +121,7 @@ public class RepoController {
     @CrossOrigin
     @GetMapping("/get_release_pred")
     @ResponseBody
-    public ReleaseStat getReleasePred(Integer id) {
+    public ReleasePredict getReleasePred(Integer id) {
         return repositoryService.nextReleaseCommitCount(id);
     }
 
