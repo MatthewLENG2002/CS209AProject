@@ -8,7 +8,7 @@ import lombok.Data;
 public class IssueDTO {
 
     private Integer display_id;
-    private Long created_at;
-    private Long duration;
+    private Double created_at;
+    private Double duration;
 
 }

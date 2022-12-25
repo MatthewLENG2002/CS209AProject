@@ -273,7 +273,7 @@ public class RepositoryServiceImpl implements RepositoryService {
             resVerbListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue()));
         }
 
-        return noun ? (resNounListDTO.size() > 10 ? resNounListDTO.subList(0, 10) : resNounListDTO) : (resVerbListDTO.size() > 10 ? resVerbListDTO.subList(0, 10) : resVerbListDTO);
+        return noun ? (resNounListDTO.size() > 20 ? resNounListDTO.subList(0, 20) : resNounListDTO) : (resVerbListDTO.size() > 20 ? resVerbListDTO.subList(0, 20) : resVerbListDTO);
     }
 
     public ReleaseStat nextReleaseCommitCount(Integer id) {
@@ -312,7 +312,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         List<Issue> issues = repositoryMapper.getIssues(id);
         List<IssueDTO> res = new ArrayList<>();
         for (Issue issue : issues) {
-            res.add(new IssueDTO(issue.getDisplay(), issue.getCreateat()/3600000, issue.getDuration()/3600000));
+            res.add(new IssueDTO(issue.getDisplay(), issue.getCreateat()/3600000d, issue.getDuration()/3600000d));
         }
         return res;
     }
@@ -323,7 +323,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         for (Issue issue : issues) {
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(issue.getCreateat());
-            res.add(new TopIssueDTO(issue.getDisplay(), c.getTime().toString(), issue.getDuration()/3600000));
+            res.add(new TopIssueDTO(issue.getDisplay(), c.getTime().toString(), issue.getDuration()/3600000d));
         }
         res.sort(new Comparator<TopIssueDTO>() {
             @Override

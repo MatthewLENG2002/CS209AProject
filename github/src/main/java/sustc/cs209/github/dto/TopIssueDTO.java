@@ -12,7 +12,7 @@ public class TopIssueDTO {
 
     private Integer display_id;
     private String created_at;
-    private Long duration;
+    private Double duration;
 
 
 }
