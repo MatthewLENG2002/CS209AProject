@@ -17,6 +17,8 @@ public class ReleasePredict {
     Integer commits;
     String startString;
     String endString;
+    Double progress;
+
 
     public ReleasePredict(String _release, Long _end) {
         this.release = _release;

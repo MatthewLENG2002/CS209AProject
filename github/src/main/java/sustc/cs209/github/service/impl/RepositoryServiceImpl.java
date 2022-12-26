@@ -280,7 +280,7 @@ public class RepositoryServiceImpl implements RepositoryService {
     public ReleasePredict nextReleaseCommitCount(Integer id) {
         List<ReleaseStat> stats = getReleaseStats(id);
         if (stats.size() == 0) {
-            return new ReleasePredict("No Release", -1L, -1L, 0, "null", "null");
+            return new ReleasePredict("No Release", -1L, -1L, 0, "null", "null", -1d);
         }
         List<double[]> data = new ArrayList<>();
         Double avgDuration = 0D;
@@ -313,6 +313,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         pred.setStartString(c1.getTime().toString());
         Integer pred_commits = (int) (coeff[0] + coeff[1] * avgDuration + coeff[2] * avgDuration * avgDuration);
         pred.setCommits(pred_commits);
+        pred.setProgress((double) last_release.getCommits() / pred_commits);
         return pred;
     }
 
