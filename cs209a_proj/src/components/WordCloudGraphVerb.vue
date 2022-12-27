@@ -83,6 +83,66 @@ export default {
             bgColor:'rgb(243, 84, 83,0.12)',
             color:'#f35453',
           },
+          {
+            name: this.getIssueVerbKeyword[10],
+            value: '1',
+            bgColor: 'rgb(57, 193, 207,0.12)',
+            color: '#39c1cf',
+          },
+          {
+            name: this.getIssueVerbKeyword[11],
+            value: '8',
+            bgColor: 'rgb(66, 105, 245,0.12)',
+            color: '#4269f5',
+          },
+          {
+            name: this.getIssueVerbKeyword[12],
+            value: '9',
+            bgColor: 'rgb(184, 107, 215,0.12)',
+            color: '#b86bd7',
+          },
+          {
+            name: this.getIssueVerbKeyword[13],
+            value: '3',
+            bgColor: 'rgba(13,26,168,0.12)',
+            color: '#2e17c2',
+          },
+          {
+            name: this.getIssueVerbKeyword[14],
+            value: '6',
+            bgColor: 'rgb(250, 116, 20,0.12)',
+            color: '#FA7414',
+          },
+          {
+            name: this.getIssueVerbKeyword[15],
+            value: '10',
+            bgColor: 'rgb(255, 171, 30,0.12)',
+            color: '#FFAB1E',
+          },
+          {
+            name: this.getIssueVerbKeyword[16],
+            value: '2',
+            bgColor: 'rgb(136, 104, 217,0.12)',
+            color: '#8868D9',
+          },
+          {
+            name: this.getIssueVerbKeyword[17],
+            value: '5',
+            bgColor: 'rgb(42, 184, 230,0.12)',
+            color: '#2AB8E6',
+          },
+          {
+            name: this.getIssueVerbKeyword[18],
+            value: '7',
+            bgColor: 'rgb(117, 133, 162,0.12)',
+            color: '#7585A2',
+          },
+          {
+            name: this.getIssueVerbKeyword[19],
+            value: '7',
+            bgColor: 'rgb(243, 84, 83,0.12)',
+            color: '#f35453',
+          },
         ]
       }
     }

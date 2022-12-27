@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 const instance = axios.create({
     //网络请求的公共配置
     timeout: 5000//5s

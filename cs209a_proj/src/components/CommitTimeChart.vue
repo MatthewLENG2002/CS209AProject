@@ -45,7 +45,7 @@ export default {
         toolbox: {
           show: true,
           feature: {
-            saveAsImage: {}
+            saveAsImage: {},
           }
         },
         angleAxis: {
@@ -75,7 +75,7 @@ export default {
             type: 'scatter',
             coordinateSystem: 'polar',
             symbolSize: function (val) {
-              return val[2] * 2;
+              return val[2] * 0.5;
             },
             data: this.getCommitTime,
             animationDelay: function (idx) {

@@ -10,9 +10,11 @@ export default {
     ...mapGetters(["getIssueScatter"]),
     option(){
       return {
-        xAxis: {},
+        xAxis: {
+          name: 'create time\n(h) from\n1st issue'
+        },
         yAxis: {
-          name: 'duration'
+          name: 'duration(h)'
         },
         toolbox: {
           show: true,
@@ -22,7 +24,7 @@ export default {
         },
         series: [
           {
-            symbolSize: 20,
+            symbolSize: 8,
             data: this.getIssueScatter,
             type: 'scatter'
           }

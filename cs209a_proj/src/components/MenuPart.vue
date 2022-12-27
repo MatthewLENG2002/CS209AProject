@@ -58,17 +58,26 @@ export default {
   mounted() {
     // this.developer(19257422)
     this.repoInit()
-    this.initRepo(19257422)
+    this.initRepo(4710920)
 
   },
   methods: {
-    ...mapActions(["repoInit",  "repoNameDes", "developer", "open_issue", "closed_issue", "release"]),
+    ...mapActions(["repoInit",  "repoNameDes", "developer", "open_issue", "closed_issue", "releases", "topCommitter", "issueResolution", "issueKeywords",
+    "issueScatter", "issueTop10", "commitTime", "releaseCommit", "releasePredict"]),
     initRepo(id){
       this.developer(id)
       this.repoNameDes(id)
       this.closed_issue(id)
       this.open_issue(id)
-      this.release(id)
+      this.releases(id)
+      this.topCommitter(id)
+      this.issueResolution(id)
+      this.issueKeywords(id)
+      this.issueScatter(id)
+      this.issueTop10(id)
+      this.commitTime(id)
+      this.releaseCommit(id)
+      this.releasePredict(id)
     },
     onEnter() {
       console.log('trigger enter');

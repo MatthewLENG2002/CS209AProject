@@ -135,7 +135,7 @@ export default {
         chartOptions: {
           chart: {
             type: 'boxPlot',
-            height: 350
+            height: 150
           },
           // title: {
           //   text: 'Horizontal BoxPlot Chart',
