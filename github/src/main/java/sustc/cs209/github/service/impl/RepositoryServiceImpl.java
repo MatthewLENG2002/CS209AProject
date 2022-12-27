@@ -137,7 +137,7 @@ public class RepositoryServiceImpl implements RepositoryService {
                 }
             }
         }
-        log.info(res.toString());
+//        log.info(res.toString());
         return res;
     }
 
@@ -156,19 +156,19 @@ public class RepositoryServiceImpl implements RepositoryService {
             cal.setTime(date);
             stats[cal.get(Calendar.DAY_OF_WEEK) - 1][cal.get(Calendar.HOUR_OF_DAY)]++;
         }
-        Integer minCommits = Integer.MAX_VALUE;
-        for (int i = 0; i < stats.length; i++) {
-            for (int j = 0; j < stats[0].length; j++) {
-                if (stats[i][j] < minCommits && stats[i][j] != 0) {
-                    minCommits = stats[i][j];
-                }
-            }
-        }
-        for (int i = 0; i < stats.length; i++) {
-            for (int j = 0; j < stats[0].length; j++) {
-                stats[i][j] /= minCommits;
-            }
-        }
+//        Integer minCommits = Integer.MAX_VALUE;
+//        for (int i = 0; i < stats.length; i++) {
+//            for (int j = 0; j < stats[0].length; j++) {
+//                if (stats[i][j] < minCommits && stats[i][j] != 0) {
+//                    minCommits = stats[i][j];
+//                }
+//            }
+//        }
+//        for (int i = 0; i < stats.length; i++) {
+//            for (int j = 0; j < stats[0].length; j++) {
+//                stats[i][j] /= minCommits;
+//            }
+//        }
         return new CommitsStat(stats);
     }
 
@@ -213,11 +213,11 @@ public class RepositoryServiceImpl implements RepositoryService {
                         }
                     }
                     if (tag.get(label.index() - 1).equals("VB")
-//                            || tag.get(label.index()).equals("VBD")
-//                            || tag.get(label.index()).equals("VBG")
-//                            || tag.get(label.index()).equals("VBN")
-//                            || tag.get(label.index()).equals("VBP")
-//                            || tag.get(label.index()).equals("VBZ")
+                            || tag.get(label.index()-1).equals("VBD")
+                            || tag.get(label.index()-1).equals("VBG")
+                            || tag.get(label.index()-1).equals("VBN")
+                            || tag.get(label.index()-1).equals("VBP")
+                            || tag.get(label.index()-1).equals("VBZ")
                     ) {
                         String word = label.originalText().toLowerCase();
                         if (resVerb.containsKey(word)) {
@@ -234,6 +234,8 @@ public class RepositoryServiceImpl implements RepositoryService {
         resVerb.remove("debug");
         resNoun.remove("error");
         resVerb.remove("be");
+        resVerb.remove("is");
+        resVerb.remove("are");
         List<Entry<String, Integer>> resNounList = new ArrayList<Entry<String, Integer>>(resNoun.entrySet());
         Collections.sort(resNounList, new Comparator<Map.Entry<String, Integer>>() {
             public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
@@ -241,15 +243,19 @@ public class RepositoryServiceImpl implements RepositoryService {
             }
         });
         List<KeywordDTO> resNounListDTO = new ArrayList<>();
+        int i = 0;
         for (Entry<String, Integer> entry : resNounList) {
-            resNounListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue() * 3));
+            resNounListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue() * (i % 2==0 ? 2 : 3)));
+            i++;
         }
 
         List<Entry<String, Integer>> resVerbList = new ArrayList<>(resVerb.entrySet());
         Collections.sort(resVerbList, (o1, o2) -> o2.getValue() - o1.getValue());
         List<KeywordDTO> resVerbListDTO = new ArrayList<>();
+        i = 0;
         for (Entry<String, Integer> entry : resVerbList) {
-            resVerbListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue() * 3));
+            resVerbListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue() * (i % 2==0 ? 2 : 3)));
+            i++;
         }
 
         return noun ? (resNounListDTO.size() > 20 ? resNounListDTO.subList(0, 20) : resNounListDTO) : (resVerbListDTO.size() > 20 ? resVerbListDTO.subList(0, 20) : resVerbListDTO);
