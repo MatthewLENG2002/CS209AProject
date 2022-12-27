@@ -236,6 +236,8 @@ public class RepositoryServiceImpl implements RepositoryService {
         resVerb.remove("be");
         resVerb.remove("is");
         resVerb.remove("are");
+        resVerb.remove("does");
+        resVerb.remove("use");
         List<Entry<String, Integer>> resNounList = new ArrayList<Entry<String, Integer>>(resNoun.entrySet());
         Collections.sort(resNounList, new Comparator<Map.Entry<String, Integer>>() {
             public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
