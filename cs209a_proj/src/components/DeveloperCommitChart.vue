@@ -38,7 +38,7 @@ export default {
           show: true,
           feature: {
             dataView: { readOnly: false },
-            magicType: { type: ['line'] },
+            magicType: { type: ['line', 'bar'] },
             restore: {},
             saveAsImage: {}
           }

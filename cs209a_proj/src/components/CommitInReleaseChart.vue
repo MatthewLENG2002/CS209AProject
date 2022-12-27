@@ -27,7 +27,7 @@ export default {
             //   yAxisIndex: 'none'
             // },
             dataView: { readOnly: false },
-            magicType: { type: ['bar'] },
+            magicType: { type: ['line', 'bar'] },
             restore: {},
             saveAsImage: {}
           }

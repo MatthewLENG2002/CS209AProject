@@ -75,7 +75,7 @@ export default {
             type: 'scatter',
             coordinateSystem: 'polar',
             symbolSize: function (val) {
-              return val[2] * 0.5;
+              return val[2] * 0.26;
             },
             data: this.getCommitTime,
             animationDelay: function (idx) {
