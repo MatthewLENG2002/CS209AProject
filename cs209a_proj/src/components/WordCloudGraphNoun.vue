@@ -15,72 +15,133 @@
 
 <script>
 import {mapGetters} from "vuex";
+
 export default {
   name: "word-cloud",
-  computed:{
+  computed: {
     ...mapGetters(["getIssueNounKeyword"]),
-    option(){
-      return{
+    option() {
+      return {
         dataList: [
           {
             name: this.getIssueNounKeyword[0],
             value: '1',
-            bgColor:'rgb(57, 193, 207,0.12)',
-            color:'#39c1cf',
+            bgColor: 'rgb(57, 193, 207,0.12)',
+            color: '#39c1cf',
           },
           {
             name: this.getIssueNounKeyword[1],
             value: '8',
-            bgColor:'rgb(66, 105, 245,0.12)',
-            color:'#4269f5',
+            bgColor: 'rgb(66, 105, 245,0.12)',
+            color: '#4269f5',
           },
           {
             name: this.getIssueNounKeyword[2],
             value: '9',
-            bgColor:'rgb(184, 107, 215,0.12)',
-            color:'#b86bd7',
+            bgColor: 'rgb(184, 107, 215,0.12)',
+            color: '#b86bd7',
           },
           {
             name: this.getIssueNounKeyword[3],
             value: '3',
-            bgColor:'rgba(13,26,168,0.12)',
-            color:'#2e17c2',
+            bgColor: 'rgba(13,26,168,0.12)',
+            color: '#2e17c2',
           },
           {
             name: this.getIssueNounKeyword[4],
             value: '6',
-            bgColor:'rgb(250, 116, 20,0.12)',
-            color:'#FA7414',
+            bgColor: 'rgb(250, 116, 20,0.12)',
+            color: '#FA7414',
           },
           {
             name: this.getIssueNounKeyword[5],
             value: '10',
-            bgColor:'rgb(255, 171, 30,0.12)',
-            color:'#FFAB1E',
+            bgColor: 'rgb(255, 171, 30,0.12)',
+            color: '#FFAB1E',
           },
           {
             name: this.getIssueNounKeyword[6],
             value: '2',
-            bgColor:'rgb(136, 104, 217,0.12)',
-            color:'#8868D9',
+            bgColor: 'rgb(136, 104, 217,0.12)',
+            color: '#8868D9',
           },
           {
             name: this.getIssueNounKeyword[7],
             value: '5',
-            bgColor:'rgb(42, 184, 230,0.12)',
-            color:'#2AB8E6',
+            bgColor: 'rgb(42, 184, 230,0.12)',
+            color: '#2AB8E6',
           },
           {
             name: this.getIssueNounKeyword[8],
             value: '7',
-            bgColor:'rgb(117, 133, 162,0.12)',
-            color:'#7585A2',
+            bgColor: 'rgb(117, 133, 162,0.12)',
+            color: '#7585A2',
           },
           {
             name: this.getIssueNounKeyword[9],
             value: '7',
-            bgColor:'rgb(243, 84, 83,0.12)',
-            color:'#f35453',
+            bgColor: 'rgb(243, 84, 83,0.12)',
+            color: '#f35453',
+          },
+          {
+            name: this.getIssueNounKeyword[10],
+            value: '1',
+            bgColor: 'rgb(57, 193, 207,0.12)',
+            color: '#39c1cf',
+          },
+          {
+            name: this.getIssueNounKeyword[11],
+            value: '8',
+            bgColor: 'rgb(66, 105, 245,0.12)',
+            color: '#4269f5',
+          },
+          {
+            name: this.getIssueNounKeyword[12],
+            value: '9',
+            bgColor: 'rgb(184, 107, 215,0.12)',
+            color: '#b86bd7',
+          },
+          {
+            name: this.getIssueNounKeyword[13],
+            value: '3',
+            bgColor: 'rgba(13,26,168,0.12)',
+            color: '#2e17c2',
+          },
+          {
+            name: this.getIssueNounKeyword[14],
+            value: '6',
+            bgColor: 'rgb(250, 116, 20,0.12)',
+            color: '#FA7414',
+          },
+          {
+            name: this.getIssueNounKeyword[15],
+            value: '10',
+            bgColor: 'rgb(255, 171, 30,0.12)',
+            color: '#FFAB1E',
+          },
+          {
+            name: this.getIssueNounKeyword[16],
+            value: '2',
+            bgColor: 'rgb(136, 104, 217,0.12)',
+            color: '#8868D9',
+          },
+          {
+            name: this.getIssueNounKeyword[17],
+            value: '5',
+            bgColor: 'rgb(42, 184, 230,0.12)',
+            color: '#2AB8E6',
+          },
+          {
+            name: this.getIssueNounKeyword[18],
+            value: '7',
+            bgColor: 'rgb(117, 133, 162,0.12)',
+            color: '#7585A2',
+          },
+          {
+            name: this.getIssueNounKeyword[19],
+            value: '7',
+            bgColor: 'rgb(243, 84, 83,0.12)',
+            color: '#f35453',
           },
         ]
       }
@@ -90,7 +151,7 @@ export default {
     return {
       timer: 50, // 球体转动速率
       radius: 0, // 词云球体面积大小
-      dtr: Math.PI/180, //鼠标滑过球体转动速度
+      dtr: Math.PI / 180, //鼠标滑过球体转动速度
       active: false, // 默认加载是否开启转动
       lasta: 0, // 上下转动
       lastb: 0.5, // 左右转动
@@ -109,21 +170,21 @@ export default {
       cosC: ''
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       this.radius = document.querySelector('.cloud-box').offsetWidth / 2
       this.initWordCloud()
     })
   },
-  beforeDestroy () {
+  beforeDestroy() {
     clearInterval(this.timer)
   },
-  methods:{
+  methods: {
     // 获取点击文本信息
-    getDataInfo (item) {
+    getDataInfo(item) {
       console.log(item, 'item')
     },
-    initWordCloud () {
+    initWordCloud() {
       this.cloudContent = document.querySelector('.cloud-box');
       this.tagContent = this.cloudContent.getElementsByTagName('span');
       for (let i = 0; i < this.tagContent.length; i++) {
@@ -135,28 +196,28 @@ export default {
       this.sineCosine(0, 0, 0);
       this.positionAll();
       this.cloudContent.onmouseover = () => {
-        this.active=true;
+        this.active = true;
       };
       this.cloudContent.onmouseout = () => {
-        this.active=false;
+        this.active = false;
       };
       this.cloudContent.onmousemove = (ev) => {
         let oEvent = window.event || ev;
-        this.mouseX = oEvent.clientX - (this.cloudContent.offsetLeft + this.cloudContent.offsetWidth/2);
-        this.mouseY = oEvent.clientY - (this.cloudContent.offsetTop + this.cloudContent.offsetHeight/2);
-        this.mouseX/= 5;
-        this.mouseY/= 5;
+        this.mouseX = oEvent.clientX - (this.cloudContent.offsetLeft + this.cloudContent.offsetWidth / 2);
+        this.mouseY = oEvent.clientY - (this.cloudContent.offsetTop + this.cloudContent.offsetHeight / 2);
+        this.mouseX /= 5;
+        this.mouseY /= 5;
       };
       setInterval(this.update, this.timer);
     },
-    positionAll () {
+    positionAll() {
       let phi = 0;
       let theta = 0;
       let max = this.tagAttrList.length;
       let aTmp = [];
       let oFragment = document.createDocumentFragment();
       //随机排序
-      for (let i=0; i < this.tagContent.length; i++) {
+      for (let i = 0; i < this.tagContent.length; i++) {
         aTmp.push(this.tagContent[i]);
       }
       aTmp.sort(() => {
@@ -166,7 +227,7 @@ export default {
         oFragment.appendChild(aTmp[i]);
       }
       this.cloudContent.appendChild(oFragment);
-      for(let i = 1; i < max + 1; i++){
+      for (let i = 1; i < max + 1; i++) {
         if (this.distr) {
           phi = Math.acos(-1 + (2 * i - 1) / max);
           theta = Math.sqrt(max * Math.PI) * phi;
@@ -175,20 +236,20 @@ export default {
           theta = Math.random() * (2 * Math.PI);
         }
         //坐标变换
-        this.tagAttrList[i-1].cx = this.radius * Math.cos(theta) * Math.sin(phi);
-        this.tagAttrList[i-1].cy = this.radius * Math.sin(theta) * Math.sin(phi);
-        this.tagAttrList[i-1].cz = this.radius * Math.cos(phi);
-        this.tagContent[i-1].style.left = this.tagAttrList[i-1].cx + this.cloudContent.offsetWidth / 2 - this.tagAttrList[i-1].offsetWidth / 2 + 'px';
-        this.tagContent[i-1].style.top = this.tagAttrList[i-1].cy + this.cloudContent.offsetHeight / 2 - this.tagAttrList[i-1].offsetHeight / 2 + 'px';
+        this.tagAttrList[i - 1].cx = this.radius * Math.cos(theta) * Math.sin(phi);
+        this.tagAttrList[i - 1].cy = this.radius * Math.sin(theta) * Math.sin(phi);
+        this.tagAttrList[i - 1].cz = this.radius * Math.cos(phi);
+        this.tagContent[i - 1].style.left = this.tagAttrList[i - 1].cx + this.cloudContent.offsetWidth / 2 - this.tagAttrList[i - 1].offsetWidth / 2 + 'px';
+        this.tagContent[i - 1].style.top = this.tagAttrList[i - 1].cy + this.cloudContent.offsetHeight / 2 - this.tagAttrList[i - 1].offsetHeight / 2 + 'px';
       }
     },
-    update () {
+    update() {
       let angleBasicA;
       let angleBasicB;
 
       if (this.active) {
-        angleBasicA = (-Math.min(Math.max(-this.mouseY, -200 ), 200) / this.radius) * this.tspeed;
-        angleBasicB = (Math.min(Math.max(-this.mouseX, -200 ), 200) / this.radius) * this.tspeed;
+        angleBasicA = (-Math.min(Math.max(-this.mouseY, -200), 200) / this.radius) * this.tspeed;
+        angleBasicB = (Math.min(Math.max(-this.mouseX, -200), 200) / this.radius) * this.tspeed;
       } else {
         angleBasicA = this.lasta * 0.98;
         angleBasicB = this.lastb * 0.98;
@@ -203,7 +264,7 @@ export default {
       // return;
       // }
       this.sineCosine(angleBasicA, angleBasicB, 0);
-      for(let j = 0; j < this.tagAttrList.length; j++) {
+      for (let j = 0; j < this.tagAttrList.length; j++) {
         let rx1 = this.tagAttrList[j].cx;
         let ry1 = this.tagAttrList[j].cy * this.cosA + this.tagAttrList[j].cz * (-this.sinA);
         let rz1 = this.tagAttrList[j].cy * this.sinA + this.tagAttrList[j].cz * this.cosA;
@@ -226,34 +287,34 @@ export default {
         this.tagAttrList[j].scale = per;
         this.tagAttrList[j].alpha = per;
 
-        this.tagAttrList[j].alpha = (this.tagAttrList[j].alpha - 0.6) * (10/6);
+        this.tagAttrList[j].alpha = (this.tagAttrList[j].alpha - 0.6) * (10 / 6);
       }
       this.doPosition();
       this.depthSort();
     },
     doPosition() {
-      let len = this.cloudContent.offsetWidth/2;
-      let height = this.cloudContent.offsetHeight/2;
-      for (let i=0;i < this.tagAttrList.length;i++) {
-        this.tagContent[i].style.left = this.tagAttrList[i].cx + len - this.tagAttrList[i].offsetWidth/2 + 'px';
-        this.tagContent[i].style.top = this.tagAttrList[i].cy + height - this.tagAttrList[i].offsetHeight/2 + 'px';
+      let len = this.cloudContent.offsetWidth / 2;
+      let height = this.cloudContent.offsetHeight / 2;
+      for (let i = 0; i < this.tagAttrList.length; i++) {
+        this.tagContent[i].style.left = this.tagAttrList[i].cx + len - this.tagAttrList[i].offsetWidth / 2 + 'px';
+        this.tagContent[i].style.top = this.tagAttrList[i].cy + height - this.tagAttrList[i].offsetHeight / 2 + 'px';
         // this.tagContent[i].style.fontSize = Math.ceil(12 * this.tagAttrList[i].scale/2) + 8 + 'px';
-        this.tagContent[i].style.fontSize = Math.ceil(12 * this.tagAttrList[i].scale/2) +2 + 'px';
-        this.tagContent[i].style.filter = "alpha(opacity="+100 * this.tagAttrList[i].alpha+")";
+        this.tagContent[i].style.fontSize = Math.ceil(12 * this.tagAttrList[i].scale / 2) + 2 + 'px';
+        this.tagContent[i].style.filter = "alpha(opacity=" + 100 * this.tagAttrList[i].alpha + ")";
         this.tagContent[i].style.opacity = this.tagAttrList[i].alpha;
       }
     },
-    depthSort(){
+    depthSort() {
       let aTmp = [];
       for (let i = 0; i < this.tagContent.length; i++) {
         aTmp.push(this.tagContent[i]);
       }
       aTmp.sort((item1, item2) => item2.cz - item1.cz);
       for (let i = 0; i < aTmp.length; i++) {
-        aTmp[i].style.zIndex=i;
+        aTmp[i].style.zIndex = i;
       }
     },
-    sineCosine (a, b, c) {
+    sineCosine(a, b, c) {
       this.sinA = Math.sin(a * this.dtr);
       this.cosA = Math.cos(a * this.dtr);
       this.sinB = Math.sin(b * this.dtr);
@@ -272,20 +333,22 @@ export default {
   height: 200px;
   margin: auto;
 }
-.cloud-box{
-  position:relative;
-  margin:20px auto 0px;
+
+.cloud-box {
+  position: relative;
+  margin: 20px auto 0px;
   width: 100%;
   height: 100%;
-  background:	#00000000;
+  background: #00000000;
 }
-.cloud-box span{
+
+.cloud-box span {
   position: absolute;
   padding: 3px 6px;
   top: 0px;
   font-weight: bold;
-  text-decoration:none;
-  left:0px;
+  text-decoration: none;
+  left: 0px;
   background-image: linear-gradient(to bottom, red, #fff);
   /*background-clip: text;*/
   color: transparent;

@@ -16,6 +16,7 @@
         </div>
       </template>
       <template #extra>
+        <a-button shape="round" style="color: darkblue">cache</a-button>
       </template>
     </a-page-header>
   </div>
@@ -24,7 +25,7 @@
 
 <script>
 import MainPart from "@/components/MenuPart";
-import {mapGetters, mapMutations} from "vuex"
+import {mapActions, mapGetters, mapMutations} from "vuex"
 
 
 export default {
@@ -32,19 +33,19 @@ export default {
   components: {
     MainPart
   },
-  computed:{
-    ...mapGetters(['getTime'])
-  },
+  // computed:{
+  //   ...mapGetters(['getTime'])
+  // },
   methods:{
-    ...mapMutations(['setTime'])
+    ...mapActions(['cache'])
   },
-  data(){
-  },
-  mounted() {
-    console.log(this.getTime)
-    this.setTime(8888)
-    console.log(this.getTime)
-  }
+  // data(){
+  // },
+  // mounted() {
+  //   console.log(this.getTime)
+  //   this.setTime(8888)
+  //   console.log(this.getTime)
+  // }
 }
 </script>
 

@@ -23,6 +23,12 @@ export default {
         toolbox: {
           show: true,
           feature: {
+            // dataZoom: {
+            //   yAxisIndex: 'none'
+            // },
+            dataView: { readOnly: false },
+            magicType: { type: ['bar'] },
+            restore: {},
             saveAsImage: {}
           }
         },
@@ -52,7 +58,8 @@ export default {
             {
               gt: 2,
               lte: 4,
-              color: '#fafafa'
+              // color: '#fafafa'
+              color: '#6699CC'
             },
             {
               gt: 4,
@@ -62,10 +69,11 @@ export default {
             {
               gt: 8,
               lte: 9,
-              color: '#fafafa'
+              // color: '#fafafa'
+              color: '#6699CC'
             },
             {
-              gt: 10,
+              gt: 9,
               color: '#6699CC'
             }
           ]

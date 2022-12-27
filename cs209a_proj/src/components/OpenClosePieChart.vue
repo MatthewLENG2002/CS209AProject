@@ -17,6 +17,7 @@ export default {
         toolbox: {
           show: true,
           feature: {
+            dataView: { readOnly: false },
             saveAsImage: {}
           }
         },

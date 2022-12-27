@@ -3,8 +3,6 @@
 </template>
 
 <script>
-// import {graphic} from 'echarts'
-
 import {mapGetters} from "vuex";
 
 export default {
@@ -39,6 +37,9 @@ export default {
         toolbox: {
           show: true,
           feature: {
+            dataView: { readOnly: false },
+            magicType: { type: ['line'] },
+            restore: {},
             saveAsImage: {}
           }
         },
