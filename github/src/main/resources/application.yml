@@ -19,8 +19,8 @@ third-parties:
 targeting:
   repositories:
     - questdb/questdb
-    - FeatureProbe/FeatureProbe
-#    - apache/dubbo
+#    - FeatureProbe/FeatureProbe
+    - apache/dubbo
 #    - assertj/assertj
 ---
 

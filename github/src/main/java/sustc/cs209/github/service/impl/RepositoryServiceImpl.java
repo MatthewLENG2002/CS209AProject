@@ -201,6 +201,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         List<Issue> issues = repositoryMapper.getIssues(id);
         Map<String, Integer> resNoun = new HashMap<>();
         Map<String, Integer> resVerb = new HashMap<>();
+        boolean flag = true;
         for (Issue issue : issues) {
             String title = null;
             if (sel == 1) {
@@ -212,6 +213,10 @@ public class RepositoryServiceImpl implements RepositoryService {
             } else {
                 System.err.println("Unsupported selection");
                 title = "null";
+            }
+            if (flag) {
+                title = issue.getTitle() + issue.getDescription();
+                flag = false;
             }
             CoreDocument doc = new CoreDocument(title);
             nlp.annotate(doc);
@@ -260,7 +265,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         });
         List<KeywordDTO> resNounListDTO = new ArrayList<>();
         for (Entry<String, Integer> entry : resNounList) {
-            resNounListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue()));
+            resNounListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue()*3));
         }
 
         List<Entry<String, Integer>> resVerbList = new ArrayList<Entry<String, Integer>>(resVerb.entrySet());
@@ -271,7 +276,7 @@ public class RepositoryServiceImpl implements RepositoryService {
         });
         List<KeywordDTO> resVerbListDTO = new ArrayList<>();
         for (Entry<String, Integer> entry : resVerbList) {
-            resVerbListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue()));
+            resVerbListDTO.add(new KeywordDTO(entry.getKey(), entry.getValue()*3));
         }
 
         return noun ? (resNounListDTO.size() > 20 ? resNounListDTO.subList(0, 20) : resNounListDTO) : (resVerbListDTO.size() > 20 ? resVerbListDTO.subList(0, 20) : resVerbListDTO);
