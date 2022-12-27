@@ -1,5 +1,7 @@
 package sustc.cs209.github.controller;
 
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +13,6 @@ import sustc.cs209.github.dto.*;
 import sustc.cs209.github.service.RepositoryService;
 import sustc.cs209.github.service.impl.RepositoryServiceImpl;
 
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/repo")
@@ -30,7 +30,7 @@ public class RepoController {
 
     @CrossOrigin
     @GetMapping("/cache")
-    public void cache(){
+    public void cache() {
         log.info("Preparing caching...");
         targetingProps.getRepositories().parallelStream().forEach(repo -> {
             log.info("Caching repo {}", repo);

@@ -1,10 +1,10 @@
 package sustc.cs209.github.dao.factory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.Date;
+import lombok.Data;
+
 
 @Data
 public class CommitApiDto {

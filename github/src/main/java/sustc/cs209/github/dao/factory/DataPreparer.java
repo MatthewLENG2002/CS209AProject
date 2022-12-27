@@ -1,10 +1,13 @@
 package sustc.cs209.github.dao.factory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.Future;
+import javax.annotation.PostConstruct;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -21,14 +24,7 @@ import sustc.cs209.github.dao.entity.Commit;
 import sustc.cs209.github.dao.entity.User;
 import sustc.cs209.github.dao.mapper.*;
 import sustc.cs209.github.service.RepositoryService;
-import sustc.cs209.github.service.impl.RepositoryServiceImpl;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 @Slf4j
 @Component
@@ -123,7 +119,8 @@ public class DataPreparer {
                 throw new IOException("unsuccessful api fetch: " + fullName);
             }
 
-            var respDto = mapper.readValue(Objects.requireNonNull(resp.body()).byteStream(), RepositoryApiDto.class);
+            var respDto = mapper.readValue(Objects
+                    .requireNonNull(resp.body()).byteStream(), RepositoryApiDto.class);
             log.info("{}", respDto);
             Repository repo = RepositoryFactory.of(respDto);
             repositoryMapper.insert(repo);
@@ -148,7 +145,6 @@ public class DataPreparer {
                 @Cleanup Response resp = httpClient.newCall(req).execute();
                 if (!resp.isSuccessful()) {
                     resp = httpClient.newCall(req).execute();
-//                    throw new IOException("unsuccessful api fetch: " + fullName);
                 }
 
                 var respDto = mapper.readValue(Objects.requireNonNull(resp.body()).byteStream(), ContributorApiDto[].class);
@@ -186,7 +182,6 @@ public class DataPreparer {
                 @Cleanup Response resp = httpClient.newCall(req).execute();
                 if (!resp.isSuccessful()) {
                     resp = httpClient.newCall(req).execute();
-//                    throw new IOException("unsuccessful api fetch commits");
                 }
                 var respDto = mapper.readValue(Objects.requireNonNull(resp.body()).byteStream(), CommitApiDto[].class);
                 if (respDto.length == 0) {
@@ -217,23 +212,19 @@ public class DataPreparer {
             while (page <= MAX_PAGE) {
                 Request req = new Request.Builder()
                         .get()
-                        .url("https://api.github.com/search/issues?q=repo:" + fullname +"%20is:issue&state=all&per_page=100&page=" + page)
+                        .url("https://api.github.com/search/issues?q=repo:" + fullname + "%20is:issue&state=all&per_page=100&page=" + page)
                         .addHeader("Authorization", thridPartiesProps.getGithub().getToken())
                         .build();
 
                 @Cleanup Response resp = httpClient.newCall(req).execute();
                 if (!resp.isSuccessful()) {
-//                    Thread.sleep(10000);
                     resp = httpClient.newCall(req).execute();
-//                    throw new IOException("unsuccessful api fetch issue ");
                 }
-//                log.info("get page No." + page);
                 var respDto = mapper.readValue(Objects.requireNonNull(resp.body()).byteStream(), IssueApiDto.class);
                 var respDtoItems = respDto.getItems();
                 if (Objects.isNull(respDtoItems) || respDtoItems.size() == 0) {
                     break;
                 }
-//                log.info("page " + page + " total size " + respDtoItems.size());
                 page++;
                 for (int i = 0; i < respDtoItems.size(); i++) {
                     try {
@@ -264,7 +255,6 @@ public class DataPreparer {
                 @Cleanup Response resp = httpClient.newCall(req).execute();
                 if (!resp.isSuccessful()) {
                     resp = httpClient.newCall(req).execute();
-//                    throw new IOException("unsuccessful api fetch release");
                 }
                 var respDto = mapper.readValue(Objects.requireNonNull(resp.body()).byteStream(), ReleaseApiDto[].class);
                 if (respDto.length == 0) {
